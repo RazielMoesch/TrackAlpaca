@@ -68,12 +68,16 @@ class Tracker():
             print(f"error in load_metrics: {e}")
             return {}
 
-    def graph_metrics(self, metrics: dict):
+    def graph_metrics(self, metrics: dict, display=True, save=True, save_path='./'):
         '''
-        Generates graphs for each metric over epochs and returns them as image objects.
+        Generates graphs for each metric over epochs, saves them as images, 
+        and optionally displays them.
 
         Parameters:
         metrics (dict): Dictionary of metrics, typically loaded using load_metrics().
+        display (bool): If True, display the graphs. Defaults to True.
+        save (bool): If True, save the graphs as images. Defaults to True.
+        save_path (str): Path where to save the images. Defaults to the current directory.
 
         Returns:
         list: List of PIL Image objects for each metric graph.
@@ -83,6 +87,7 @@ class Tracker():
             epochs = sorted([int(e) for e in metrics.keys()])
             str_epochs = [str(e) for e in epochs]
             images = []
+
             for name in metric_names:
                 values = [metrics[epoch][name] for epoch in str_epochs]
                 plt.figure()
@@ -91,28 +96,18 @@ class Tracker():
                 plt.ylabel(name)
                 plt.title(f'{name} Over Epochs')
                 plt.grid(True)
-                buf = BytesIO()
-                plt.show()
-                plt.savefig(buf, format='png')
-                buf.seek(0)
-                img = Image.open(buf)
-                images.append(img)
+
+                if save:
+                    image_file = f'{save_path}/{name}.jpg'
+                    plt.savefig(image_file, format='jpg')
+                    print(f"Saved {name} graph as {image_file}")
+                
+                if display:
+                    plt.show()
+
                 plt.close()
+                
             return images
         except Exception as e:
             print(f"error in graph_metrics: {e}")
             return []
-
-
-if __name__ == "__main__":
-    try:
-        t = Tracker("metrics.json")
-        for epoch in range(5):
-            metric_names = ["loss", "accuracy"]
-            metric_values = [1.0 / (epoch + 1), 0.5 + 0.1 * epoch]
-            t.log_metrics(epoch, metric_names, metric_values)
-        t.save_metrics()
-        loaded_metrics = t.load_metrics("metrics.json")
-        imgs = t.graph_metrics(loaded_metrics)
-    except Exception as e:
-        print(f"error in __main__: {e}")
