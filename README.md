@@ -13,11 +13,13 @@
 
 ## Requirements
 
-- Python 3.9 (used 3.12.7)
+- Python 3.9 (tested with 3.12.7)
 - `matplotlib` for graphing.
 - `PIL` (Pillow) for handling image data.
 
-Install the required dependencies using `pip`:
+## Installation
+
+You can install `TrackAlpaca` directly from PyPI by running:
 
 ```bash
-pip install matplotlib pillow
+pip install TrackAlpaca

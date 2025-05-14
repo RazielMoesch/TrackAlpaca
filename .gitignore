@@ -1,0 +1,6 @@
+dist
+build
+setup.py
+TrackAlpaca.egg-info
+trackalpaca/__init__.py
+.gitignore
