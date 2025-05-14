@@ -13,7 +13,7 @@
 
 ## Requirements
 
-- Python 3.x
+- Python 3.9 (used 3.12.7)
 - `matplotlib` for graphing.
 - `PIL` (Pillow) for handling image data.
 
